@@ -1,2 +1,3 @@
 # Food-Vision
-It contains images of food, organized by type of food. It was used in the Paper "Food-101 – Mining Discriminative Components with Random Forests" by Lukas Bossard, Matthieu Guillaumin and Luc Van Gool. It's a good (large dataset) for testing computer vision techniques.
+## Introduction
+It is end-to-end **CNN Image Classification Model** notebook which identifies the food in your image. In this project I was working with pre-trained classification model **EfficientNetB0** and **Food101 Dataset**.
