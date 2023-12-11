@@ -1,19 +1,16 @@
 import tensorflow as tf
 import streamlit as st
 
-def load_and_prep_image(image, img_shape = 224, scale = False):
-    # Decode it into a tensor
-    img = tf.image.decode_image(img, channels = 3)
-    # Resize the image
-    img = tf.image.resize(img, [img_size, img_size])
+def load_and_prep(image, shape=224, scale=False):
+    image = tf.image.decode_image(image, channels=3)
+    image = tf.image.resize(image, size=([shape, shape]))
     if scale:
-        return img / 255.
-    else:
-        return img
+        image = image / 255.
+    return image
 
 @st.cache(suppress_st_warning=True)
 def predicting(image, model):
-    image = load_and_prep_image(image, img_shape = 224, scale = False)
+    image = load_and_prep(image)
     image = tf.cast(tf.expand_dims(image, axis = 0), tf.float32)
     preds = model.predict(image)
     pred_class = class_names[tf.argmax(preds[0])]
