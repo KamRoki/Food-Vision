@@ -149,7 +149,7 @@ st.write('To know more about this app, visit [**GitHub**](https://github.com/Kam
 file = st.file_uploader(label = 'Upload your food image.',
                         type = ['jpg', 'jpeg', 'png'])
 
-model = tf.keras.models.load_model('./models/fine_tuned_model.hdf5')
+model = tf.keras.models.load_model('./models/fine_tuned_model.h5')
 
 st.sidebar.markdown('Created by **Kamil Stachurski**')
 
