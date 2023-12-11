@@ -127,12 +127,6 @@ def main():
                    'tuna_tartare',
                    'waffles']
     model = load_model()
-    img = load_image()
-    input_tensor = preprocess(img)
-    # pred_probs = model.predict(input_tensor)
-    # pred_class = class_names[tf.argmax(pred_probs)]
-    # pred_conf = tf.reduce_max(pred)
-    # result = st.button('Predict')
 
 
 
