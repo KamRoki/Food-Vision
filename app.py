@@ -13,8 +13,8 @@ def predicting(image, model):
     image = load_and_prep(image)
     image = tf.cast(tf.expand_dims(image, axis = 0), tf.float32)
     preds = model.predict(image)
-    pred_class = class_names[tf.argmax(preds[0])]
-    pred_conf = tf.reduce_max(preds[0])
+    pred_class = class_names[tf.argmax(preds)]
+    pred_conf = tf.reduce_max(preds)
     return pred_class, pred_conf
 
 class_names = ['apple_pie',
