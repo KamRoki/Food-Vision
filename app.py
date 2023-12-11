@@ -1,21 +1,7 @@
+import numpy as np
 import tensorflow as tf
 import streamlit as st
-
-def load_and_prep(image, shape=224, scale=False):
-    image = tf.image.decode_image(image, channels=3)
-    image = tf.image.resize(image, size=([shape, shape]))
-    if scale:
-        image = image / 255.
-    return image
-
-@st.cache(suppress_st_warning=True)
-def predicting(image, model):
-    image = load_and_prep(image)
-    image = tf.cast(tf.expand_dims(image, axis = 0), tf.float32)
-    preds = model.predict(image)
-    pred_class = class_names[tf.argmax(preds)]
-    pred_conf = tf.reduce_max(preds)
-    return pred_class, pred_conf
+from PIL import Image
 
 class_names = ['apple_pie',
                 'baby_back_ribs',
@@ -138,25 +124,41 @@ training set contains some noise.
 **Dataset:** **`Food101`**
 ''')
 
+st.sidebar.markdown('Created by **Kamil Stachurski**')
+
 # Main Body
 st.title('👁️ Food Vision 🍔')
 st.header('Let\'s identify what\'s in your food photo!')
 st.write('To know more about this app, visit [**GitHub**](https://github.com/KamRoki/Food-Vision)')
 
-file = st.file_uploader(label = 'Upload your food image.',
-                        type = ['jpg', 'jpeg', 'png'])
+st.set_option('deprecation./showfileUploaderEncoding', False)
 
-model = tf.keras.models.load_model('models/fine_tuned_model.h5')
+@st.cache(allow_output_mutation = True)
 
-st.sidebar.markdown('Created by **Kamil Stachurski**')
+def load_model():
+    model = tf.keras.models.load_model('models/fine_tuned_model.h5')
+    return model
 
-if not file:
-    st.warning('Please upload an image...')
+def predicting(image, model):
+    image = tf.cast(image, tf.float32)
+    image = tf.image.resize(image, [224, 224])
+    image = tf.expand_dims(image, axis = 0)
+    prediction = model.predict(image)
+    return prediction
+
+model = load_model()
+file = st.file_uploader('Upload your food image', type = ['jpg', 'jpeg', 'png'])
+
+if file is None:
+    st.text('Waiting for upload an image...')
 else:
-    image = file.read()
-    st.image(image, use_column_width = True)
-    pred_button = st.button('Predict food class')
-
-if pred_button:
-    pred_class, pred_conf = predicting(image, model)
-    st.success(f'Prediction: {pred_class} \nConfidence: {pred_conf * 100:.2f}%')
+    slot = st.empty()
+    slot.text('Running inference...')
+    test_image = Image.open(file)
+    st.image(test_image, caption = 'Input Image', width = 400)
+    pred = predicting(np.asarray(test_image), model)
+    pred_class = class_names[tf.argmax(pred)]
+    pred_conf = tf.reduce_max(pred)
+    output = 'Prediction: ' + pred_class + ' \nConfidence: ' + pred_conf
+    slot.text('Done')
+    st.success(output)
