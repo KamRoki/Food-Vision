@@ -127,6 +127,7 @@ def main():
                    'tuna_tartare',
                    'waffles']
     model = load_model()
+    img = load_image()
 
 
 
