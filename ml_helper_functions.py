@@ -20,7 +20,7 @@ def load_and_prep_image(filename, img_shape = 224, scale = True):
     # Decode it into a tensor
     img = tf.image.decode_image(img, channels = 3)
     # Resize the image
-    img = tf.image.resize(img, [img_size, img_size])
+    img = tf.image.resize(img, [img_shape, img_shape])
     if scale:
         return img / 255.
     else:
