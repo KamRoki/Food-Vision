@@ -16,3 +16,5 @@ st.write('To know more about this app, visit [**GitHub**](https://github.com/Kam
 image_data = st.file_uploader(label = 'Upload your food image.',
                         type = ['jpg', 'jpeg', 'png'])
 #st.image(image_data)
+
+img = preprocess_image(image_data)
